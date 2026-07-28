@@ -61,7 +61,9 @@ Aspect ratio 3:2.
 2. Compute **N = lifeState.day + 1**. The date for day N = `meta.startDate` plus (N-1) days;
    compute its weekday name (e.g. "Tuesday").
 3. **Write day N's entry.** Continue continuity from the most recent entries and `lifeState`.
-   Fields: `day`, `date` (YYYY-MM-DD), `weekday`, `title` (short, lowercase-ish, specific),
+   Fields: `day`, `date` (YYYY-MM-DD), `weekday` (optional — the page derives the weekday from
+   the date itself, so this field is not displayed; set it right anyway or omit it),
+   `title` (short, lowercase-ish, specific),
    `image` = the string `"IMAGE_DAY_N"` (literal sentinel, e.g. `"IMAGE_DAY_2"`),
    `imageAlt` (one sentence describing the picture), `sections` (an array of 3–4 objects,
    each `{ "label": ..., "body": ... }`), and a short italic `footnote`.

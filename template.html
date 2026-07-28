@@ -451,11 +451,14 @@
     var earlier = entries.slice(0, -1).reverse();
 
     function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
-    function fmtDate(iso, weekday) {
+    // Weekday is always derived from the date itself, so a mistyped weekday in the
+    // data can never show a wrong day-of-week. Pass withWeekday=false to omit it.
+    function fmtDate(iso, withWeekday) {
       var d = new Date(iso + "T00:00:00");
-      var opts = { month: "long", day: "numeric", year: "numeric" };
-      var base = isNaN(d) ? esc(iso) : d.toLocaleDateString("en-US", opts);
-      return (weekday ? esc(weekday) + " · " : "") + base;
+      if (isNaN(d)) return esc(iso);
+      var base = d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+      if (withWeekday === false) return base;
+      return d.toLocaleDateString("en-US", { weekday: "long" }) + " · " + base;
     }
 
     document.getElementById("m-title").textContent = DATA.meta.title;
@@ -505,7 +508,7 @@
     }).join("");
     t.innerHTML =
       '<div class="daystamp"><span class="n">Day ' + latest.day + '</span>' +
-      '<span class="dot">·</span><span>' + fmtDate(latest.date, latest.weekday) + '</span></div>' +
+      '<span class="dot">·</span><span>' + fmtDate(latest.date) + '</span></div>' +
       '<h2>' + esc(latest.title) + '</h2>' +
       '<figure><img src="' + latest.image + '" alt="' + esc(latest.imageAlt) + '">' +
       (latest.imageAlt ? '<figcaption>' + esc(latest.imageAlt) + '</figcaption>' : '') +
@@ -536,7 +539,7 @@
         return '<button class="past" data-idx="' + idx + '">' +
           '<img src="' + e.image + '" alt="">' +
           '<div class="meta">' +
-          '<div class="pstamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date, e.weekday) + '</div>' +
+          '<div class="pstamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date) + '</div>' +
           '<h4>' + esc(e.title) + '</h4>' +
           '<p class="excerpt">' + esc(firstBody) + '</p></div></button>';
       }).join("");
@@ -550,7 +553,7 @@
             return '<div class="section"><p class="label">' + esc(s.label) + '</p><p>' + esc(s.body) + '</p></div>';
           }).join("");
           mb.innerHTML =
-            '<div class="daystamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date, e.weekday) + '</div>' +
+            '<div class="daystamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date) + '</div>' +
             '<h3>' + esc(e.title) + '</h3>' +
             '<img src="' + e.image + '" alt="' + esc(e.imageAlt || "") + '">' +
             secs + (e.footnote ? '<p class="footnote">' + esc(e.footnote) + '</p>' : '');
@@ -563,7 +566,7 @@
     var dayCount = entries.length;
     document.getElementById("colophon").innerHTML =
       esc(DATA.meta.title) + '<br>' + dayCount + ' day' + (dayCount === 1 ? '' : 's') +
-      ' lived so far · begun ' + fmtDate(DATA.meta.startDate) + '<br>' +
+      ' lived so far · begun ' + fmtDate(DATA.meta.startDate, false) + '<br>' +
       'An imagined life, authored daily in good faith.';
   })();
 </script>
