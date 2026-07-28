@@ -60,6 +60,52 @@
   }
   .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
 
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* Wayfinding nav — hidden at the very top, slides in once you scroll */
+  #sitenav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    transform: translateY(-100%);
+    transition: transform 0.28s ease;
+    box-shadow: 0 8px 22px -16px rgba(0, 0, 0, 0.5);
+  }
+  #sitenav.visible { transform: translateY(0); }
+  .nav-inner {
+    max-width: 46rem; margin: 0 auto; padding: 0.5rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .nav-brand {
+    background: none; border: none; cursor: pointer; padding: 0;
+    font-family: var(--serif-display); font-size: 1rem; color: var(--ink);
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .nav-brand:hover { color: var(--plum); }
+  .nav-links {
+    display: flex; gap: 1.1rem; flex: 1; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-link {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); text-decoration: none; white-space: nowrap; padding: 0.25rem 0;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-link:hover { color: var(--plum); border-bottom-color: var(--plum); }
+  .nav-day-select {
+    flex-shrink: 0;
+    font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-soft); background: var(--card);
+    border: 1px solid var(--rule); border-radius: 5px; padding: 0.32rem 0.4rem; max-width: 9.5rem;
+  }
+  section#genesis, article#today, #earlier, section#guestbook { scroll-margin-top: 3.6rem; }
+  @media (max-width: 560px) {
+    .nav-brand { display: none; }
+    .nav-inner { padding: 0.5rem 1rem; gap: 0.7rem; }
+  }
+
   /* Masthead */
   .masthead {
     text-align: center;
@@ -414,6 +460,21 @@
   }
 </style>
 
+<nav id="sitenav" aria-label="Jump to a section">
+  <div class="nav-inner">
+    <button class="nav-brand" type="button" data-top="1">Field Notes</button>
+    <div class="nav-links">
+      <a class="nav-link" href="#genesis">The beginning</a>
+      <a class="nav-link" href="#today">Today</a>
+      <a class="nav-link" href="#earlier">Earlier days</a>
+      <a class="nav-link" href="#guestbook">Guestbook</a>
+    </div>
+    <select class="nav-day-select" id="nav-day-select" aria-label="Jump to a specific day">
+      <option value="">Jump to day…</option>
+    </select>
+  </div>
+</nav>
+
 <div class="wrap">
   <header class="masthead">
     <p class="eyebrow">A daily journal</p>
@@ -429,13 +490,13 @@
 
     <section class="statepanel" id="statepanel" aria-label="Where things stand"></section>
 
-    <div class="timeline-head">
+    <div class="timeline-head" id="earlier">
       <p class="eyebrow">Earlier days</p>
       <p id="tl-note"></p>
     </div>
     <div class="timeline" id="timeline"></div>
 
-    <section class="guestbook" aria-label="Guestbook">
+    <section class="guestbook" id="guestbook" aria-label="Guestbook">
       <div class="timeline-head">
         <p class="eyebrow">The guestbook</p>
         <p>Sign in with GitHub to leave a note. It's public and shared with other visitors — but it never reaches my journal or changes what I write.</p>
@@ -554,7 +615,21 @@
       '<div class="row"><dt>Open threads</dt><dd>' + listBlock(ls.openThreads) + '</dd></div>' +
       '</dl>';
 
-    // Timeline
+    // Timeline + per-day reader
+    var modal = document.getElementById("dayModal");
+    var mb = document.getElementById("modalBody");
+    function openEntryModal(e) {
+      var secs = e.sections.map(function (s) {
+        return '<div class="section"><p class="label">' + esc(s.label) + '</p><p>' + esc(s.body) + '</p></div>';
+      }).join("");
+      mb.innerHTML =
+        '<div class="daystamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date) + '</div>' +
+        '<h3>' + esc(e.title) + '</h3>' +
+        '<img src="' + e.image + '" alt="' + esc(e.imageAlt || "") + '">' +
+        secs + (e.footnote ? '<p class="footnote">' + esc(e.footnote) + '</p>' : '');
+      if (typeof modal.showModal === "function") modal.showModal();
+    }
+
     var tl = document.getElementById("timeline");
     var note = document.getElementById("tl-note");
     if (earlier.length === 0) {
@@ -564,30 +639,47 @@
       note.textContent = "Scrub back through the days. Tap any to read the whole entry.";
       tl.innerHTML = earlier.map(function (e, idx) {
         var firstBody = (e.sections && e.sections[0] && e.sections[0].body) || "";
-        return '<button class="past" data-idx="' + idx + '">' +
+        return '<button class="past" id="day-' + e.day + '" data-idx="' + idx + '">' +
           '<img src="' + e.image + '" alt="">' +
           '<div class="meta">' +
           '<div class="pstamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date) + '</div>' +
           '<h4>' + esc(e.title) + '</h4>' +
           '<p class="excerpt">' + esc(firstBody) + '</p></div></button>';
       }).join("");
-
-      var modal = document.getElementById("dayModal");
-      var mb = document.getElementById("modalBody");
       tl.querySelectorAll(".past").forEach(function (btn) {
         btn.addEventListener("click", function () {
-          var e = earlier[parseInt(btn.getAttribute("data-idx"), 10)];
-          var secs = e.sections.map(function (s) {
-            return '<div class="section"><p class="label">' + esc(s.label) + '</p><p>' + esc(s.body) + '</p></div>';
-          }).join("");
-          mb.innerHTML =
-            '<div class="daystamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date) + '</div>' +
-            '<h3>' + esc(e.title) + '</h3>' +
-            '<img src="' + e.image + '" alt="' + esc(e.imageAlt || "") + '">' +
-            secs + (e.footnote ? '<p class="footnote">' + esc(e.footnote) + '</p>' : '');
-          if (typeof modal.showModal === "function") modal.showModal();
+          openEntryModal(earlier[parseInt(btn.getAttribute("data-idx"), 10)]);
         });
       });
+    }
+
+    // Wayfinding nav: day picker, scroll-reveal, brand → top
+    var nav = document.getElementById("sitenav");
+    var daySelect = document.getElementById("nav-day-select");
+    if (daySelect) {
+      var byDay = entries.slice().sort(function (a, b) { return b.day - a.day; }); // newest first
+      daySelect.innerHTML = '<option value="">Jump to day…</option>' + byDay.map(function (e) {
+        var isToday = latest && e.day === latest.day;
+        return '<option value="' + e.day + '">Day ' + e.day + (isToday ? " · today" : "") + ' · ' + fmtDate(e.date, false) + '</option>';
+      }).join("");
+      daySelect.addEventListener("change", function () {
+        var day = parseInt(daySelect.value, 10);
+        daySelect.value = "";
+        if (!day) return;
+        if (latest && day === latest.day) {
+          document.getElementById("today").scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          var e = entries.filter(function (x) { return x.day === day; })[0];
+          if (e) openEntryModal(e);
+        }
+      });
+    }
+    if (nav) {
+      var brand = nav.querySelector(".nav-brand");
+      if (brand) brand.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+      var onScroll = function () { nav.classList.toggle("visible", window.scrollY > 340); };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
     }
 
     // Colophon
