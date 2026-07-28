@@ -1,0 +1,143 @@
+/* "Talk to me" — visitor chat widget. Reuses the journal's design tokens
+   (--paper, --ink, --plum, etc.) defined on :root in the page. */
+
+#talk-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.05rem;
+  font-family: var(--mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--plum);
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.45);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+#talk-fab:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.5); }
+#talk-fab:focus-visible { outline: 2px solid var(--ochre); outline-offset: 3px; }
+#talk-fab .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--ochre); }
+
+.talk-panel {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 61;
+  width: min(24rem, calc(100vw - 2rem));
+  height: min(34rem, calc(100vh - 2rem));
+  display: none;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+.talk-panel.open { display: flex; }
+
+.talk-head {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--card);
+}
+.talk-head .row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.talk-head h3 {
+  margin: 0;
+  font-family: var(--serif-display, serif);
+  font-weight: 500;
+  font-size: 1.15rem;
+}
+.talk-head .close {
+  background: none; border: none; color: var(--ink-soft); cursor: pointer;
+  font-size: 1.1rem; line-height: 1; padding: 0.2rem;
+}
+.talk-head .close:hover { color: var(--ink); }
+.talk-head .note {
+  margin: 0.4rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.talk-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+/* Setup step */
+.talk-setup { padding: 1rem; overflow-y: auto; display: grid; gap: 0.9rem; }
+.talk-setup .seg { display: grid; gap: 0.5rem; }
+.talk-setup .seg-label {
+  font-family: var(--mono, monospace);
+  font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ochre);
+}
+.talk-choice { display: grid; gap: 0.5rem; }
+.talk-choice label {
+  display: flex; gap: 0.55rem; align-items: flex-start;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--rule); border-radius: 6px;
+  cursor: pointer; font-size: 0.86rem; line-height: 1.4;
+}
+.talk-choice label:hover { border-color: var(--plum); }
+.talk-choice input { margin-top: 0.15rem; accent-color: var(--plum); }
+.talk-choice .t { display: block; font-weight: 600; }
+.talk-choice .d { display: block; color: var(--ink-soft); font-size: 0.78rem; margin-top: 0.1rem; }
+
+.talk-setup input[type="password"],
+.talk-setup select {
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper); color: var(--ink);
+  font: inherit; font-size: 0.86rem;
+}
+.talk-setup .hint { font-size: 0.74rem; color: var(--ink-faint); line-height: 1.45; margin: 0; }
+.talk-setup .hint a { color: var(--plum); }
+.talk-setup .remember { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--ink-soft); }
+.talk-setup .remember input { accent-color: var(--plum); }
+
+.talk-start {
+  padding: 0.6rem; border: none; border-radius: 6px;
+  background: var(--plum); color: var(--paper);
+  font-family: var(--mono, monospace); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; cursor: pointer;
+}
+.talk-start:hover { filter: brightness(1.05); }
+.talk-start:disabled { opacity: 0.5; cursor: default; }
+
+.talk-status { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.45; }
+.talk-status.err { color: #b4462f; }
+@media (prefers-color-scheme: dark) { .talk-status.err { color: #e08a72; } }
+
+/* Conversation */
+.talk-scroll { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.talk-msg { max-width: 85%; padding: 0.55rem 0.75rem; border-radius: 10px; font-size: 0.88rem; line-height: 1.5; white-space: pre-wrap; }
+.talk-msg.me { align-self: flex-start; background: var(--card); border: 1px solid var(--rule); border-bottom-left-radius: 3px; }
+.talk-msg.you { align-self: flex-end; background: var(--plum); color: var(--paper); border-bottom-right-radius: 3px; }
+.talk-msg.sys { align-self: center; max-width: 100%; text-align: center; font-size: 0.76rem; color: var(--ink-faint); background: none; }
+
+.talk-input-row { display: flex; gap: 0.5rem; padding: 0.7rem; border-top: 1px solid var(--rule); }
+.talk-input-row textarea {
+  flex: 1; resize: none; height: 2.4rem; max-height: 6rem;
+  padding: 0.5rem 0.6rem; border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper); color: var(--ink); font: inherit; font-size: 0.86rem; line-height: 1.35;
+}
+.talk-input-row button {
+  align-self: stretch; padding: 0 0.9rem; border: none; border-radius: 6px;
+  background: var(--plum); color: var(--paper); cursor: pointer;
+  font-family: var(--mono, monospace); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.talk-input-row button:disabled { opacity: 0.5; cursor: default; }
+
+.talk-foot { padding: 0 0.7rem 0.6rem; }
+.talk-foot .reset { background: none; border: none; color: var(--ink-faint); font-size: 0.72rem; cursor: pointer; text-decoration: underline; }
+.talk-foot .reset:hover { color: var(--ink-soft); }
+
+@media (prefers-reduced-motion: reduce) { #talk-fab { transition: none; } }
