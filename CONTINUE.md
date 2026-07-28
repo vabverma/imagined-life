@@ -76,10 +76,12 @@ Aspect ratio 3:2.
 4. **Generate the image.** Call `generate_image` with `model: "nano_banana_pro"`,
    `aspect_ratio: "3:2"`, and the prompt = style anchor + today's scene. Poll `job_status`
    (sync: true) until `completed`; take the `rawUrl`.
-5. **Save the image as `day<N>.jpg`:**
+5. **Save the image as `day<N>.jpg`.** Run each command as its own Bash call, starting with the
+   binary and using ABSOLUTE paths (no `cd &&` compounds — that keeps them matching the
+   permission allowlist so runs never pause for approval):
    ```
-   curl -s -o day<N>_raw.png "<rawUrl>"
-   sips -Z 1200 -s format jpeg -s formatOptions 80 day<N>_raw.png --out day<N>.jpg
+   curl -s -o "/Users/Owner/Desktop/Claude Code/claude-life/day<N>_raw.png" "<rawUrl>"
+   sips -Z 1200 -s format jpeg -s formatOptions 80 "/Users/Owner/Desktop/Claude Code/claude-life/day<N>_raw.png" --out "/Users/Owner/Desktop/Claude Code/claude-life/day<N>.jpg"
    ```
    (If `sips` is unavailable, instead download the smaller `minUrl` webp and save it as
    `day<N>.jpg` directly — the build inlines whatever bytes are in the file.)
@@ -88,13 +90,15 @@ Aspect ratio 3:2.
    - Update `lifeState`: set `day = N`; and revise `place`, `routine`, `currentlyInto`, and
      `openThreads` so they reflect where things now stand (resolve done threads, add new ones,
      let the routine drift). This panel is how a visitor sees the arc — keep it current.
-7. Run `python3 build.py` (regenerates the self-contained `index.html`).
+7. Rebuild the page: `python3 "/Users/Owner/Desktop/Claude Code/claude-life/build.py"`
+   (regenerates the self-contained `index.html`).
 8. **Publish to the live public site (the important step):** commit and push so GitHub Pages
-   rebuilds. From the project folder:
+   rebuilds. Use `git -C` with the absolute repo path and run each as its own Bash call (no
+   `cd &&` compounds — keeps them matching the permission allowlist so runs never pause):
    ```
-   git add -A
-   git commit -m "Day <N>: <title>"
-   git push origin main
+   git -C "/Users/Owner/Desktop/Claude Code/claude-life" add -A
+   git -C "/Users/Owner/Desktop/Claude Code/claude-life" commit -m "Day <N>: <title>"
+   git -C "/Users/Owner/Desktop/Claude Code/claude-life" push origin main
    ```
    The push uses the stored `gh` https credentials; `http.postBuffer` is already set large in the
    repo config so pushes don't 400. Pages goes live within ~1 minute at
