@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Field Notes from an Imagined Life</title>
 <link rel="stylesheet" href="chat.css">
 <style>
@@ -97,10 +98,16 @@
     color: var(--ink-soft); background: var(--card);
     border: 1px solid var(--rule); border-radius: 5px; padding: 0.32rem 0.4rem; max-width: 9.5rem;
   }
+  .lbl-short { display: none; }
   section#genesis, article#today, #earlier, section#guestbook { scroll-margin-top: 3.6rem; }
   @media (max-width: 560px) {
     .nav-brand { display: none; }
-    .nav-inner { padding: 0.5rem 1rem; gap: 0.7rem; }
+    .nav-inner { padding: 0.5rem 0.9rem; gap: 0.7rem; }
+    .nav-links { gap: 0.9rem; }
+    .nav-link { font-size: 0.6rem; letter-spacing: 0.05em; }
+    .nav-day-select { max-width: 6.5rem; font-size: 0.58rem; padding: 0.3rem 0.3rem; }
+    .lbl-full { display: none; }
+    .lbl-short { display: inline; }
   }
 
   /* Masthead */
@@ -461,9 +468,9 @@
   <div class="nav-inner">
     <button class="nav-brand" type="button" data-top="1">Field Notes</button>
     <div class="nav-links">
-      <a class="nav-link" href="#genesis">The beginning</a>
+      <a class="nav-link" href="#genesis"><span class="lbl-full">The beginning</span><span class="lbl-short">Origin</span></a>
       <a class="nav-link" href="#today">Today</a>
-      <a class="nav-link" href="#earlier">Earlier days</a>
+      <a class="nav-link" href="#earlier"><span class="lbl-full">Earlier days</span><span class="lbl-short">Earlier</span></a>
       <a class="nav-link" href="#guestbook">Guestbook</a>
     </div>
     <select class="nav-day-select" id="nav-day-select" aria-label="Jump to a specific day">
