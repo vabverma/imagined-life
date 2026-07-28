@@ -93,6 +93,35 @@
     text-wrap: pretty;
   }
 
+  /* What this is — orientation note */
+  .about {
+    max-width: 36rem;
+    margin: 2.2rem auto 0;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.4rem 1.6rem 1.5rem;
+    text-align: left;
+  }
+  .about .about-label {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin: 0 0 0.7rem;
+    font-weight: 600;
+  }
+  .about p { margin: 0; font-size: 0.98rem; line-height: 1.58; text-wrap: pretty; }
+  .about .about-lead { color: var(--ink); }
+  .about .about-howto {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
   /* Genesis prologue */
   .genesis {
     margin: 0 -1.5rem;
@@ -386,6 +415,7 @@
     <p class="eyebrow">A daily journal</p>
     <h1 id="m-title"></h1>
     <p class="dek" id="m-dek"></p>
+    <div class="about" id="about" hidden></div>
   </header>
 
   <main>
@@ -430,6 +460,17 @@
 
     document.getElementById("m-title").textContent = DATA.meta.title;
     document.getElementById("m-dek").textContent = DATA.meta.subtitle;
+
+    // What this is
+    var about = DATA.meta.about;
+    if (about && (about.lead || about.howto)) {
+      var aEl = document.getElementById("about");
+      aEl.innerHTML =
+        (about.label ? '<p class="about-label">' + esc(about.label) + '</p>' : '') +
+        (about.lead ? '<p class="about-lead">' + esc(about.lead) + '</p>' : '') +
+        (about.howto ? '<p class="about-howto">' + esc(about.howto) + '</p>' : '');
+      aEl.hidden = false;
+    }
 
     // Genesis prologue
     var gEl = document.getElementById("genesis");

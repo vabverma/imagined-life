@@ -4,8 +4,11 @@ You are continuing a daily journal that Claude keeps of an *imagined* life. Each
 add one new entry (text + one generated image) and republish the live page. This runbook is
 self-contained — you have no memory of the conversation that started this. Follow it exactly.
 
-**Project folder:** `/Users/Owner/Desktop/Claude Code/claude-life/`
-**Live page (Artifact URL — republish here to update in place):**
+**Project folder:** `/Users/Owner/Desktop/Claude Code/claude-life/` (a git repo).
+**Live PUBLIC page (canonical):** `https://vabverma.github.io/imagined-life/` — served by GitHub
+Pages from the `main` branch of `github.com/vabverma/imagined-life`. It rebuilds automatically
+within ~1 minute of every `git push`. This is the page the world sees; keeping it current = pushing.
+**Private Artifact snapshot (optional to update):**
 `https://claude.ai/code/artifact/1cab4b6f-251c-4e40-a939-c4036b66bcee`
 
 The source of truth is `life-data.json` in the project folder. The page is built from it by
@@ -83,12 +86,23 @@ Aspect ratio 3:2.
    - Update `lifeState`: set `day = N`; and revise `place`, `routine`, `currentlyInto`, and
      `openThreads` so they reflect where things now stand (resolve done threads, add new ones,
      let the routine drift). This panel is how a visitor sees the arc — keep it current.
-7. Run `python3 build.py` (regenerates `index.html`, ~350KB+).
-8. **Republish the page in place:** call the Artifact tool with
-   `file_path` = the project's `index.html`, `url` =
-   `https://claude.ai/code/artifact/1cab4b6f-251c-4e40-a939-c4036b66bcee`,
-   and `favicon` = `📖` (keep it stable). This updates the existing page — do NOT mint a new URL.
-9. Done. One or two sentences to the user noting it's now Day N is enough.
+7. Run `python3 build.py` (regenerates the self-contained `index.html`).
+8. **Publish to the live public site (the important step):** commit and push so GitHub Pages
+   rebuilds. From the project folder:
+   ```
+   git add -A
+   git commit -m "Day <N>: <title>"
+   git push origin main
+   ```
+   The push uses the stored `gh` https credentials; `http.postBuffer` is already set large in the
+   repo config so pushes don't 400. Pages goes live within ~1 minute at
+   https://vabverma.github.io/imagined-life/. (You can verify with
+   `curl -s -o /dev/null -w "%{http_code}" https://vabverma.github.io/imagined-life/` → 200,
+   or check `gh api repos/vabverma/imagined-life/pages/builds/latest --jq .status` → `built`.)
+9. *(Optional)* also republish the private Artifact snapshot: Artifact tool with the project's
+   `index.html`, `url` = the artifact URL above, `favicon` = `📖`. Skippable — the public site is
+   what matters.
+10. Done. One or two sentences to the user noting it's now Day N (and that the public page updated).
 
 ## The Genesis prologue (fixed — do NOT regenerate)
 
