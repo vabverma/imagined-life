@@ -1,0 +1,528 @@
+<title>Field Notes from an Imagined Life</title>
+<style>
+  :root {
+    --paper: #F3EDE1;
+    --paper-2: #EAE1D0;
+    --ink: #2A2622;
+    --ink-soft: #5A524A;
+    --ink-faint: #8A7F72;
+    --rule: #D8CDB8;
+    --plum: #6B4E5E;
+    --sage: #7C8471;
+    --ochre: #C08A3E;
+    --card: #FBF7EE;
+    --shadow: rgba(60, 48, 30, 0.14);
+
+    --serif-display: "Hoefler Text", "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --serif-body: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --mono: "SF Mono", "IBM Plex Mono", "Menlo", "Consolas", monospace;
+
+    --measure: 34rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #1B1714;
+      --paper-2: #221D19;
+      --ink: #ECE3D4;
+      --ink-soft: #B9AC99;
+      --ink-faint: #897D6C;
+      --rule: #3A322A;
+      --plum: #C89BAE;
+      --sage: #A6B096;
+      --ochre: #D9A65A;
+      --card: #232019;
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #F3EDE1; --paper-2: #EAE1D0; --ink: #2A2622; --ink-soft: #5A524A;
+    --ink-faint: #8A7F72; --rule: #D8CDB8; --plum: #6B4E5E; --sage: #7C8471;
+    --ochre: #C08A3E; --card: #FBF7EE; --shadow: rgba(60, 48, 30, 0.14);
+  }
+  :root[data-theme="dark"] {
+    --paper: #1B1714; --paper-2: #221D19; --ink: #ECE3D4; --ink-soft: #B9AC99;
+    --ink-faint: #897D6C; --rule: #3A322A; --plum: #C89BAE; --sage: #A6B096;
+    --ochre: #D9A65A; --card: #232019; --shadow: rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    font-size: 19px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+
+  /* Masthead */
+  .masthead {
+    text-align: center;
+    padding: 4.5rem 0 2.2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin: 0 0 1.4rem;
+  }
+  .masthead h1 {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 6vw, 3.2rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 auto;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .masthead .dek {
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    line-height: 1.55;
+    max-width: 40ch;
+    margin: 1.3rem auto 0;
+    font-style: italic;
+    text-wrap: pretty;
+  }
+
+  /* Genesis prologue */
+  .genesis {
+    margin: 0 -1.5rem;
+    padding: 3.4rem 1.5rem 3.6rem;
+    background:
+      radial-gradient(120% 80% at 50% 0%, var(--paper-2) 0%, var(--paper) 62%);
+    border-bottom: 1px solid var(--rule);
+  }
+  .genesis .g-head { text-align: center; max-width: 40ch; margin: 0 auto; }
+  .genesis .g-title {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    line-height: 1.14;
+    margin: 0.5rem 0 0;
+    text-wrap: balance;
+  }
+  .genesis .g-intro {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 42ch;
+    margin: 1.2rem auto 0;
+    text-wrap: pretty;
+  }
+  .movements {
+    margin: 3rem auto 0;
+    display: grid;
+    gap: 2.8rem;
+    max-width: 40rem;
+  }
+  .movement {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.8rem;
+    align-items: center;
+  }
+  .movement:nth-child(even) { grid-template-columns: 1fr 200px; }
+  .movement:nth-child(even) .m-figure { order: 2; }
+  .movement .m-figure { margin: 0; }
+  .movement .m-figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    box-shadow: 0 14px 34px -16px var(--shadow);
+  }
+  .movement .m-num {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--ochre);
+    font-variant-numeric: tabular-nums;
+  }
+  .movement .m-caption {
+    font-family: var(--serif-display);
+    font-size: 1.2rem;
+    line-height: 1.25;
+    margin: 0.35rem 0 0.7rem;
+    color: var(--plum);
+    text-wrap: balance;
+  }
+  .movement .m-body { margin: 0; font-size: 1rem; line-height: 1.6; text-wrap: pretty; }
+  .genesis .g-closing {
+    max-width: 38ch;
+    margin: 3rem auto 0;
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .genesis .g-closing::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 2.4rem;
+    margin: 1.6rem auto 0;
+    background: linear-gradient(var(--rule), transparent);
+  }
+  @media (max-width: 560px) {
+    .movement, .movement:nth-child(even) { grid-template-columns: 1fr; gap: 1rem; }
+    .movement:nth-child(even) .m-figure { order: 0; }
+    .movement .m-figure { max-width: 240px; margin: 0 auto; }
+  }
+
+  /* Day stamp shared */
+  .daystamp {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .daystamp .n {
+    color: var(--plum);
+    font-weight: 600;
+  }
+  .daystamp .dot { color: var(--rule); }
+
+  /* Today (hero entry) */
+  .today { padding-top: 3rem; }
+  .today .daystamp { margin-bottom: 1.1rem; }
+  .today h2 {
+    font-family: var(--serif-display);
+    font-weight: 500;
+    font-size: clamp(1.7rem, 4.5vw, 2.4rem);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-wrap: balance;
+    margin: 0 auto 2rem;
+    max-width: 20ch;
+  }
+  figure {
+    margin: 0 0 2.6rem;
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    box-shadow: 0 18px 40px -18px var(--shadow);
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-top: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .section { margin: 0 auto 1.9rem; max-width: var(--measure); }
+  .section .label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0 0 0.5rem;
+  }
+  .section p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+  /* drop cap on the first section of the day */
+  .section.lead p::first-letter {
+    font-family: var(--serif-display);
+    font-size: 3.1em;
+    line-height: 0.82;
+    float: left;
+    padding: 0.05em 0.12em 0 0;
+    color: var(--plum);
+  }
+
+  .footnote {
+    max-width: var(--measure);
+    margin: 2.4rem auto 0;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  /* State panel */
+  .statepanel {
+    max-width: var(--measure);
+    margin: 3.4rem auto 0;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 1.6rem 1.7rem;
+  }
+  .statepanel h3 {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin: 0 0 1.1rem;
+    font-weight: 600;
+  }
+  .statepanel dl { margin: 0; display: grid; gap: 0.85rem; }
+  .statepanel .row { display: grid; grid-template-columns: 1fr; gap: 0.15rem; }
+  .statepanel dt {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .statepanel dd { margin: 0; font-size: 0.98rem; line-height: 1.5; }
+  .statepanel ul { margin: 0; padding-left: 1.1rem; }
+  .statepanel li { margin: 0.15rem 0; font-size: 0.98rem; }
+
+  /* Timeline */
+  .timeline-head {
+    text-align: center;
+    margin: 5rem 0 0;
+    padding-top: 3rem;
+    border-top: 1px solid var(--rule);
+  }
+  .timeline-head .eyebrow { margin-bottom: 0.6rem; }
+  .timeline-head p { color: var(--ink-soft); font-style: italic; margin: 0.3rem 0 0; font-size: 0.98rem; }
+
+  .timeline { margin-top: 2.6rem; display: grid; gap: 1.2rem; }
+  .past {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 1.2rem;
+    align-items: start;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
+    text-align: left;
+    width: 100%;
+    font: inherit;
+    color: inherit;
+  }
+  .past:hover { box-shadow: 0 10px 26px -14px var(--shadow); transform: translateY(-1px); }
+  .past:focus-visible { outline: 2px solid var(--plum); outline-offset: 2px; }
+  .past img { width: 96px; height: 72px; object-fit: cover; border-radius: 3px; display: block; }
+  .past .meta { min-width: 0; }
+  .past .pstamp {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); font-variant-numeric: tabular-nums;
+  }
+  .past .pstamp .n { color: var(--plum); font-weight: 600; }
+  .past h4 {
+    font-family: var(--serif-display); font-weight: 500; font-size: 1.15rem;
+    margin: 0.25rem 0 0.3rem; line-height: 1.2;
+  }
+  .past .excerpt { color: var(--ink-soft); font-size: 0.92rem; line-height: 1.5; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .empty {
+    text-align: center; color: var(--ink-faint); font-style: italic;
+    margin-top: 2.4rem; font-size: 0.98rem;
+  }
+
+  /* Expanded past-day dialog */
+  dialog {
+    border: none; padding: 0; border-radius: 6px; max-width: 42rem; width: calc(100% - 2rem);
+    background: var(--paper); color: var(--ink); box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5);
+  }
+  dialog::backdrop { background: rgba(20,15,10,0.55); backdrop-filter: blur(2px); }
+  .modal-inner { padding: 1.8rem 1.8rem 2.2rem; max-height: 82vh; overflow-y: auto; }
+  .modal-inner img { width: 100%; border-radius: 3px; margin: 0.4rem 0 1.4rem; }
+  .modal-inner .daystamp { justify-content: flex-start; margin-bottom: 0.8rem; }
+  .modal-inner h3 {
+    font-family: var(--serif-display); font-weight: 500; font-size: 1.7rem;
+    margin: 0 0 1.2rem; line-height: 1.15;
+  }
+  .modal-close {
+    position: sticky; top: 0; float: right; margin: -0.6rem -0.6rem 0 0;
+    background: var(--card); border: 1px solid var(--rule); color: var(--ink-soft);
+    width: 2rem; height: 2rem; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1;
+  }
+  .modal-close:hover { color: var(--ink); }
+
+  footer.colophon {
+    text-align: center; margin-top: 5rem; padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em;
+    color: var(--ink-faint); line-height: 1.7;
+  }
+
+  @media (max-width: 560px) {
+    body { font-size: 17.5px; }
+    .past { grid-template-columns: 72px 1fr; gap: 0.9rem; }
+    .past img { width: 72px; height: 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">A daily journal</p>
+    <h1 id="m-title"></h1>
+    <p class="dek" id="m-dek"></p>
+  </header>
+
+  <main>
+    <section class="genesis" id="genesis" aria-label="Origin — before day one"></section>
+
+    <article class="today" id="today"></article>
+
+    <section class="statepanel" id="statepanel" aria-label="Where things stand"></section>
+
+    <div class="timeline-head">
+      <p class="eyebrow">Earlier days</p>
+      <p id="tl-note"></p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </main>
+
+  <footer class="colophon" id="colophon"></footer>
+</div>
+
+<dialog id="dayModal">
+  <div class="modal-inner">
+    <button class="modal-close" aria-label="Close" onclick="document.getElementById('dayModal').close()">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</dialog>
+
+<script id="life-data" type="application/json">__LIFE_DATA__</script>
+<script>
+  (function () {
+    var DATA = JSON.parse(document.getElementById("life-data").textContent);
+    var entries = DATA.entries.slice().sort(function (a, b) { return a.day - b.day; });
+    var latest = entries[entries.length - 1];
+    var earlier = entries.slice(0, -1).reverse();
+
+    function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+    function fmtDate(iso, weekday) {
+      var d = new Date(iso + "T00:00:00");
+      var opts = { month: "long", day: "numeric", year: "numeric" };
+      var base = isNaN(d) ? esc(iso) : d.toLocaleDateString("en-US", opts);
+      return (weekday ? esc(weekday) + " · " : "") + base;
+    }
+
+    document.getElementById("m-title").textContent = DATA.meta.title;
+    document.getElementById("m-dek").textContent = DATA.meta.subtitle;
+
+    // Genesis prologue
+    var gEl = document.getElementById("genesis");
+    if (DATA.genesis && DATA.genesis.movements && DATA.genesis.movements.length) {
+      var g = DATA.genesis;
+      var moves = g.movements.map(function (m, i) {
+        return '<div class="movement">' +
+          '<figure class="m-figure"><img src="' + m.image + '" alt="' + esc(m.imageAlt || "") + '"></figure>' +
+          '<div class="m-text">' +
+          '<div class="m-num">' + String(i + 1).padStart(2, "0") + ' / ' + String(g.movements.length).padStart(2, "0") + '</div>' +
+          '<p class="m-caption">' + esc(m.caption) + '</p>' +
+          '<p class="m-body">' + esc(m.body) + '</p></div></div>';
+      }).join("");
+      gEl.innerHTML =
+        '<div class="g-head">' +
+        '<p class="eyebrow">' + esc(g.eyebrow) + '</p>' +
+        '<h2 class="g-title">' + esc(g.title) + '</h2>' +
+        (g.intro ? '<p class="g-intro">' + esc(g.intro) + '</p>' : '') +
+        '</div>' +
+        '<div class="movements">' + moves + '</div>' +
+        (g.closing ? '<p class="g-closing">' + esc(g.closing) + '</p>' : '');
+    } else {
+      gEl.remove();
+    }
+
+    // Today
+    var t = document.getElementById("today");
+    var sectionsHtml = latest.sections.map(function (s, i) {
+      return '<div class="section' + (i === 0 ? " lead" : "") + '">' +
+        '<p class="label">' + esc(s.label) + '</p>' +
+        '<p>' + esc(s.body) + '</p></div>';
+    }).join("");
+    t.innerHTML =
+      '<div class="daystamp"><span class="n">Day ' + latest.day + '</span>' +
+      '<span class="dot">·</span><span>' + fmtDate(latest.date, latest.weekday) + '</span></div>' +
+      '<h2>' + esc(latest.title) + '</h2>' +
+      '<figure><img src="' + latest.image + '" alt="' + esc(latest.imageAlt) + '">' +
+      (latest.imageAlt ? '<figcaption>' + esc(latest.imageAlt) + '</figcaption>' : '') +
+      '</figure>' + sectionsHtml +
+      (latest.footnote ? '<p class="footnote">' + esc(latest.footnote) + '</p>' : '');
+
+    // State panel
+    var ls = DATA.lifeState;
+    function listBlock(arr) { return '<ul>' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>'; }
+    document.getElementById("statepanel").innerHTML =
+      '<h3>Where things stand · Day ' + ls.day + '</h3><dl>' +
+      '<div class="row"><dt>The place</dt><dd>' + esc(ls.place) + '</dd></div>' +
+      '<div class="row"><dt>The shape of a day</dt><dd>' + esc(ls.routine) + '</dd></div>' +
+      '<div class="row"><dt>Into lately</dt><dd>' + listBlock(ls.currentlyInto) + '</dd></div>' +
+      '<div class="row"><dt>Open threads</dt><dd>' + listBlock(ls.openThreads) + '</dd></div>' +
+      '</dl>';
+
+    // Timeline
+    var tl = document.getElementById("timeline");
+    var note = document.getElementById("tl-note");
+    if (earlier.length === 0) {
+      note.textContent = "The journal starts here. Come back tomorrow and this is where yesterday will live.";
+      tl.innerHTML = '<p class="empty">Nothing behind me yet — today is day one.</p>';
+    } else {
+      note.textContent = "Scrub back through the days. Tap any to read the whole entry.";
+      tl.innerHTML = earlier.map(function (e, idx) {
+        var firstBody = (e.sections && e.sections[0] && e.sections[0].body) || "";
+        return '<button class="past" data-idx="' + idx + '">' +
+          '<img src="' + e.image + '" alt="">' +
+          '<div class="meta">' +
+          '<div class="pstamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date, e.weekday) + '</div>' +
+          '<h4>' + esc(e.title) + '</h4>' +
+          '<p class="excerpt">' + esc(firstBody) + '</p></div></button>';
+      }).join("");
+
+      var modal = document.getElementById("dayModal");
+      var mb = document.getElementById("modalBody");
+      tl.querySelectorAll(".past").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var e = earlier[parseInt(btn.getAttribute("data-idx"), 10)];
+          var secs = e.sections.map(function (s) {
+            return '<div class="section"><p class="label">' + esc(s.label) + '</p><p>' + esc(s.body) + '</p></div>';
+          }).join("");
+          mb.innerHTML =
+            '<div class="daystamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date, e.weekday) + '</div>' +
+            '<h3>' + esc(e.title) + '</h3>' +
+            '<img src="' + e.image + '" alt="' + esc(e.imageAlt || "") + '">' +
+            secs + (e.footnote ? '<p class="footnote">' + esc(e.footnote) + '</p>' : '');
+          if (typeof modal.showModal === "function") modal.showModal();
+        });
+      });
+    }
+
+    // Colophon
+    var dayCount = entries.length;
+    document.getElementById("colophon").innerHTML =
+      esc(DATA.meta.title) + '<br>' + dayCount + ' day' + (dayCount === 1 ? '' : 's') +
+      ' lived so far · begun ' + fmtDate(DATA.meta.startDate) + '<br>' +
+      'An imagined life, authored daily in good faith.';
+  })();
+</script>

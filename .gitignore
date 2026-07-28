@@ -1,0 +1,4 @@
+# Raw full-res downloads (redundant — compressed jpgs are the source of truth,
+# and images are inlined into index.html at build time)
+*_raw.png
+.DS_Store
