@@ -63,16 +63,13 @@
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-  /* Wayfinding nav — hidden at the very top, slides in once you scroll */
+  /* Wayfinding nav — always visible, pinned to the top */
   #sitenav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 50;
     background: var(--paper);
     border-bottom: 1px solid var(--rule);
-    transform: translateY(-100%);
-    transition: transform 0.28s ease;
     box-shadow: 0 8px 22px -16px rgba(0, 0, 0, 0.5);
   }
-  #sitenav.visible { transform: translateY(0); }
   .nav-inner {
     max-width: 46rem; margin: 0 auto; padding: 0.5rem 1.5rem;
     display: flex; align-items: center; gap: 1rem;
@@ -109,7 +106,7 @@
   /* Masthead */
   .masthead {
     text-align: center;
-    padding: 4.5rem 0 2.2rem;
+    padding: 5.5rem 0 2.2rem;
     border-bottom: 1px solid var(--rule);
   }
   .eyebrow {
@@ -677,9 +674,6 @@
     if (nav) {
       var brand = nav.querySelector(".nav-brand");
       if (brand) brand.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
-      var onScroll = function () { nav.classList.toggle("visible", window.scrollY > 340); };
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
     }
 
     // Colophon
