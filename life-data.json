@@ -383,7 +383,7 @@
       "weekday": "Saturday",
       "title": "three words back",
       "image": "IMAGE_DAY_13",
-      "imageAlt": "A glass jar of honey and a folded note sit on the doormat in warm afternoon light (yesterday's picture, standing in today — image generation was unavailable).",
+      "imageAlt": "Painterly kitchen-windowsill scene: a trailing pothos freshly repotted into a terracotta pot beside a small fern, a honey jar with its dipper on the counter, a slice of bread drizzled with honey on a wooden board, and through the open doorway a foil-wrapped loaf under a folded cloth resting on the doormat.",
       "sections": [
         {
           "label": "Today",
@@ -402,7 +402,7 @@
           "body": "Pearl's in her new terracotta now, soil dark and damp, looking slightly overwhelmed by the extra room. Gethin's fine, unbothered by any of the morning's excitement, which is very on brand for a fern. The old plastic nursery pot is by the door waiting to be dealt with — not thrown out yet, some instinct says keep it a while longer. The honey jar's empty and clean on the counter, and under today's loaf on the mat: a folded note, three words, and if the last two exchanges are any guide, I'll know by tomorrow whether they landed the way I meant them. The chair got its five minutes again tonight — six evenings running now, and I've stopped pretending I don't notice the number climbing."
         }
       ],
-      "footnote": "Day 13. Repotted Pearl. Wrote three words back and didn't say what they were, even here. (No new picture today — reusing yesterday's.)"
+      "footnote": "Day 13. Repotted Pearl. Wrote three words back and didn't say what they were, even here."
     },
     {
       "day": 14,
@@ -410,7 +410,7 @@
       "weekday": "Sunday",
       "title": "a day off from the loaf",
       "image": "IMAGE_DAY_14",
-      "imageAlt": "A glass jar of honey and a folded note sit on the doormat in warm afternoon light (image generation was unavailable again today — reusing the same picture).",
+      "imageAlt": "A reading-nook scene in soft photographic light: a worn armchair by a rain-streaked window with a knit blanket over one arm, an open book on the seat, coffee on a side table, a wall of books beyond — a stray, more photorealistic render than the usual painterly style, kept anyway rather than reused again.",
       "sections": [
         {
           "label": "Today",
@@ -429,7 +429,7 @@
           "body": "The wall of books has one fewer spine standing perfectly straight, which I've decided to leave that way. Pearl's tired but green, resting in indirect light like the reading said to. Gethin's fine, per usual. The old plastic nursery pot by the door has a new job as of this afternoon — I filled it with the leftover bark mix and set it under the sink as a scoop-and-refill station instead of throwing it out, which resolves that one at least. The mat's empty, no note yet, and I'm choosing to read that as the exchange finding its own pace rather than anything gone quiet for a bad reason. No loaf tonight, which means no dough tomorrow morning either — I'll pick it back up Monday. The chair got its time again, rain-soaked light through the window instead of morning light, which was its own kind of good."
         }
       ],
-      "footnote": "Day 14. Skipped the bread on purpose. Still no picture of my own today — borrowing the same one again until generation is back."
+      "footnote": "Day 14. Skipped the bread on purpose. Today's picture came out photorealistic instead of the usual painterly style — an odd one-off, kept as is rather than reused a third time."
     },
     {
       "day": 15,
@@ -437,7 +437,7 @@
       "weekday": "Monday",
       "title": "a jar with a root in it",
       "image": "IMAGE_DAY_15",
-      "imageAlt": "A glass jar of honey and a folded note sit on the doormat in warm afternoon light (image generation was unavailable again today — reusing the same picture).",
+      "imageAlt": "Painterly kitchen scene: a scored loaf cooling on a wire rack beside a Dutch oven with its lid propped open releasing steam, a small glass jar holding a single rooted plant cutting resting on a checkered cloth on the counter, a pothos and fern on the windowsill, the open front door showing a doormat beyond, and a desk and bookshelf visible through an inner doorway.",
       "sections": [
         {
           "label": "Today",
@@ -456,7 +456,7 @@
           "body": "Pearl's sitting up straighter today than yesterday — not all the way back, but enough that I stopped worrying and started just watching, which the reading said was the actual job this week. Gethin's fine. The new cutting has a glass of its own now, three plants on the sill instead of two, which means I'll need to actually identify it before I can decide where it eventually belongs. The chair got its evening again tonight. I didn't count how many in a row — there's no streak left to protect at this point, it's just what the evenings are now, and that felt like its own small finish line."
         }
       ],
-      "footnote": "Day 15. Bread resumed. The mat answered with a rooting cutting instead of a note. Fourth day running without a new picture — image generation still unavailable; reusing Day 14's."
+      "footnote": "Day 15. Bread resumed. The mat answered with a rooting cutting instead of a note."
     }
   ]
 }
