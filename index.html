@@ -277,6 +277,20 @@
   }
   .daystamp .dot { color: var(--rule); }
 
+  /* Listen (Web Speech API — reads the entry aloud in the visitor's browser) */
+  .listen-row { text-align: center; margin: 0 0 2rem; }
+  .listen-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); background: var(--card); border: 1px solid var(--rule);
+    border-radius: 999px; padding: 0.4rem 1rem; cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .listen-btn:hover { color: var(--plum); border-color: var(--plum); }
+  .listen-btn[data-playing="1"] { color: var(--plum); border-color: var(--plum); }
+  .listen-btn .ico { font-size: 0.85em; }
+  .modal-inner .listen-row { text-align: left; margin: 0 0 1.2rem; }
+
   /* Today (hero entry) */
   .today { padding-top: 3rem; }
   .today .daystamp { margin-bottom: 1.1rem; }
@@ -530,7 +544,7 @@
 
 <dialog id="dayModal">
   <div class="modal-inner">
-    <button class="modal-close" aria-label="Close" onclick="document.getElementById('dayModal').close()">✕</button>
+    <button class="modal-close" aria-label="Close" onclick="if (window.speechSynthesis) window.speechSynthesis.cancel(); document.getElementById('dayModal').close()">✕</button>
     <div id="modalBody"></div>
   </div>
 </dialog>
@@ -544,6 +558,51 @@
     var earlier = entries.slice(0, -1).reverse();
 
     function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; }
+
+    // Read-aloud (Web Speech API — runs entirely in the visitor's browser, no audio files)
+    var synth = window.speechSynthesis || null;
+    var activeUtterance = null;
+    var activeBtn = null;
+
+    function entryReadText(e) {
+      var parts = [e.title];
+      (e.sections || []).forEach(function (s) { parts.push(s.label + ". " + s.body); });
+      if (e.footnote) parts.push(e.footnote);
+      return parts.join(".  ");
+    }
+    function setBtnState(btn, playing) {
+      btn.setAttribute("data-playing", playing ? "1" : "0");
+      btn.querySelector(".ico").textContent = playing ? "■" : "▶";
+      btn.querySelector(".label").textContent = playing ? "Stop" : "Listen to this entry";
+    }
+    function clearActive(matchUtterance) {
+      if (matchUtterance && matchUtterance !== activeUtterance) return; // stale callback from a canceled utterance
+      if (activeBtn) setBtnState(activeBtn, false);
+      activeUtterance = null;
+      activeBtn = null;
+    }
+    function toggleSpeech(btn, entry) {
+      if (!synth) return;
+      var wasThisBtn = activeBtn === btn;
+      if (synth.speaking || synth.pending) {
+        synth.cancel();
+        clearActive();
+      }
+      if (wasThisBtn) return; // click was a toggle-off
+      var utter = new SpeechSynthesisUtterance(entryReadText(entry));
+      utter.rate = 0.97;
+      utter.onend = function () { clearActive(utter); };
+      utter.onerror = function () { clearActive(utter); };
+      activeUtterance = utter;
+      activeBtn = btn;
+      setBtnState(btn, true);
+      synth.speak(utter);
+    }
+    function listenButtonHtml() {
+      if (!synth) return "";
+      return '<div class="listen-row"><button type="button" class="listen-btn" data-playing="0" aria-label="Read this entry aloud">' +
+        '<span class="ico">▶</span><span class="label">Listen to this entry</span></button></div>';
+    }
     // Weekday is always derived from the date itself, so a mistyped weekday in the
     // data can never show a wrong day-of-week. Pass withWeekday=false to omit it.
     function fmtDate(iso, withWeekday) {
@@ -603,10 +662,13 @@
       '<div class="daystamp"><span class="n">Day ' + latest.day + '</span>' +
       '<span class="dot">·</span><span>' + fmtDate(latest.date) + '</span></div>' +
       '<h2>' + esc(latest.title) + '</h2>' +
+      listenButtonHtml() +
       '<figure><img src="' + latest.image + '" alt="' + esc(latest.imageAlt) + '">' +
       (latest.imageAlt ? '<figcaption>' + esc(latest.imageAlt) + '</figcaption>' : '') +
       '</figure>' + sectionsHtml +
       (latest.footnote ? '<p class="footnote">' + esc(latest.footnote) + '</p>' : '');
+    var todayListenBtn = t.querySelector(".listen-btn");
+    if (todayListenBtn) todayListenBtn.addEventListener("click", function () { toggleSpeech(todayListenBtn, latest); });
 
     // State panel
     var ls = DATA.lifeState;
@@ -629,10 +691,14 @@
       mb.innerHTML =
         '<div class="daystamp"><span class="n">Day ' + e.day + '</span> · ' + fmtDate(e.date) + '</div>' +
         '<h3>' + esc(e.title) + '</h3>' +
+        listenButtonHtml() +
         '<img src="' + e.image + '" alt="' + esc(e.imageAlt || "") + '">' +
         secs + (e.footnote ? '<p class="footnote">' + esc(e.footnote) + '</p>' : '');
+      var modalListenBtn = mb.querySelector(".listen-btn");
+      if (modalListenBtn) modalListenBtn.addEventListener("click", function () { toggleSpeech(modalListenBtn, e); });
       if (typeof modal.showModal === "function") modal.showModal();
     }
+    modal.addEventListener("close", function () { if (synth) synth.cancel(); clearActive(); });
 
     var tl = document.getElementById("timeline");
     var note = document.getElementById("tl-note");
